@@ -74,6 +74,32 @@ app.get("/books/:id" , (req,res) => {
     res.status(200).json(book)  
 })
 
+// __________________ POST A BOOK  ___________________
+app.post( ("/books") , (req, res) => {
+
+    const newBook = req.body;
+    newBook.id = books.length + 1;
+
+    // _______________MISSING FIELD VALIDATION ______________
+    if( !newBook.title || !newBook.author || !newBook.price) {
+        return res.status(400).json({
+            message : "Title, Author and Price are required"
+        });
+    }
+
+    // price === undefined → "Was nothing provided?"
+    // !price → "Is the value empty/falsy?"
+
+    books.push(newBook);
+    res.status(201).json({
+        message : "Book is added successfully",
+        book:  newBook
+    });
+})
+
+
+
+
 const PORT = 3000;
 app.listen( PORT, () => {
     console.log(`The server is running on the http://localhost:${PORT}`);
