@@ -97,6 +97,33 @@ app.post( ("/books") , (req, res) => {
     });
 })
 
+// __________________________ DELETION _______________
+// : means "this part is a dynamic value (parameter)"
+app.delete ( "/books/:id", (req,res) => {
+    const ID = Number(req.params.id);
+
+    if(isNaN(ID)) {
+        return res.status(400).json(
+            { message: "Invalid ID"}
+        )
+    }
+
+    const index = books.findIndex( (book) => {
+       return book.id === ID;
+    })
+
+    if(index === -1) {
+        return res.status(404).json(
+            { message: "Book not found"}
+        )
+    }
+
+    books.splice(index,1);
+    
+    return res.status(200).json(
+        {message: "Deleted Successfully"}
+    )
+})
 
 
 
